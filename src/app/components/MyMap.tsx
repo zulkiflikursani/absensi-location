@@ -12,10 +12,11 @@ interface MyMapProps {
   defaultLatitude: number;
   defaultLongitude: number;
 }
-
+// -5.40067046122867, 119.4505217021217
+// -3.543032606259001, 118.9721758643772
 const PATENT_LOCATION: Location = {
-  latitude: -5.434949076345139,
-  longitude: 119.43973302759719,
+  latitude: -3.543032606259001,
+  longitude: 118.9721758643772,
 };
 
 const VALIDATION_RADIUS_METERS = 1000;
@@ -45,7 +46,7 @@ const calculateDistance = (
 
 const patentIcon = new L.Icon({
   iconUrl: "/marker-icon.png",
-  iconSize: [25, 41],
+  iconSize: [25, 30],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
 });
@@ -68,6 +69,7 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
     longitude: defaultLongitude,
   });
   const [isValid, setIsValid] = useState<boolean | null>(null);
+  const [jarak, setJarak] = useState<number | null>(null);
   const mapRef = useRef<Map | null>(null);
 
   useEffect(() => {
@@ -91,10 +93,12 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
   }, []);
 
   useEffect(() => {
+    console.log("Nilai location di dalam useEffect:", location); // Periksa nilai location saat diperbarui
+
     if (mapRef.current && location.latitude && location.longitude) {
       mapRef.current.setView([location.latitude, location.longitude], 13);
+      setMapLoaded(true);
     }
-    setMapLoaded(true);
   }, [location]);
 
   const validateLocation = () => {
@@ -102,13 +106,21 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
       { latitude: location.latitude ?? 0, longitude: location.longitude ?? 0 },
       PATENT_LOCATION
     );
+    setJarak(distance);
     console.log("Jarak dari Lokasi Paten:", distance, "km");
     setIsValid(distance <= VALIDATION_RADIUS_KM);
 
-    if (mapRef.current && location.latitude && location.longitude) {
-      mapRef.current.flyTo([location.latitude, location.longitude], 20); // Ubah level zoom sesuai keinginan
-      console.log("zoom lokasi");
-    }
+    // Zoom ke lokasi saat validasi
+    setTimeout(() => {
+      if (mapRef.current && location.latitude && location.longitude) {
+        mapRef.current.flyTo([location.latitude, location.longitude], 16);
+      } else {
+        console.log(
+          "mapRef.current masih null localtion atau lokasi tidak valid.",
+          location
+        );
+      }
+    }, 2000); // Tunda 500ms (sesuaikan sesuai kebutuhan)
   };
 
   const customIcon = new L.Icon({
@@ -120,13 +132,14 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
 
   return (
     <div>
-      {location && <p>State Lokasi: {JSON.stringify(location)}</p>}{" "}
+      {/* {location && <p>State Lokasi: {JSON.stringify(location)}</p>}{" "} */}
       {/* <-- Tambahkan ini */}
       {location.latitude !== null && location.longitude !== null ? (
         <MapContainer
           center={[location.latitude, location.longitude] as [number, number]}
           zoom={12}
           style={{ height: "400px", width: "100%" }}
+          ref={mapRef}
         >
           <TileLayer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -144,12 +157,13 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         <p>Memuat peta...</p>
       )}
       <button
-        className="p-2 rounded-full bg-blue-500 "
+        className="p-2 rounded-full bg-blue-500 disabled:bg-gray-500 "
         onClick={validateLocation}
         disabled={!mapLoaded}
       >
         Validasi Lokasi
       </button>
+      <p>Jarak dari Lokasi Paten: {jarak} km</p>
       {isValid === true && (
         <p>
           Anda berada dalam jarak {VALIDATION_RADIUS_METERS} meter dari lokasi!
