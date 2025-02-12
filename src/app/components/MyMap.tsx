@@ -12,11 +12,10 @@ interface MyMapProps {
   defaultLatitude: number;
   defaultLongitude: number;
 }
-// -5.40067046122867, 119.4505217021217
-// -3.543032606259001, 118.9721758643772
+// -3.5283975106524754, 118.98642921477968 FE unsulbar
 const PATENT_LOCATION: Location = {
-  latitude: -3.543032606259001,
-  longitude: 118.9721758643772,
+  latitude: -3.5283975106524754,
+  longitude: 118.98642921477968,
 };
 
 const VALIDATION_RADIUS_METERS = 1000;
