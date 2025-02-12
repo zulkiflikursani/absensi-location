@@ -1,12 +1,14 @@
-import MapLocation from "@/app/component/Maplocation";
+import React from "react";
+import MapWrapper from "../components/MapWrapper";
 
-const Page = () => {
+function LocationPage() {
   return (
     <div>
-      <h1>Your Location on Map</h1>
-      <MapLocation />
+      <h1>Lokasi Anda</h1>
+      <MapWrapper defaultLatitude={-6.2} defaultLongitude={106.816666} />{" "}
+      {/* Jakarta */}
     </div>
   );
-};
+}
 
-export default Page;
+export default LocationPage;
