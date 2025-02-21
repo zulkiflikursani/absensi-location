@@ -20,6 +20,7 @@ export default function LaporanAbsensi() {
   // const session = useSession();
   const { data: sessionData, status } = useSession(); // Destructure status
   const [data, setData] = useState<DataType[]>();
+  const [loading, setLoading] = useState(false);
 
   const [getBulan, setBulan] = useState<BodyType>({
     bulan: "",
@@ -33,6 +34,7 @@ export default function LaporanAbsensi() {
     const fetchData = async () => {
       if (getBulan.idUser !== 0 && getBulan.bulan !== "") {
         try {
+          setLoading(true);
           const getData = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/getdata`,
             {
@@ -46,6 +48,7 @@ export default function LaporanAbsensi() {
           const data = await getData.json();
           console.log(data);
           setData(data);
+          setLoading(false);
         } catch (error) {
           console.log(error);
         }
@@ -120,8 +123,9 @@ export default function LaporanAbsensi() {
       <div className="col-span-1">
         {/* Tombol Print (tambahkan class "no-print") */}
         <button
+          disabled={loading}
           onClick={() => window.print()}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded no-print"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded print:hidden"
         >
           Print
         </button>
@@ -139,6 +143,13 @@ export default function LaporanAbsensi() {
           </tr>
         </thead>
         <tbody>
+          {loading === true && (
+            <tr>
+              <td colSpan={7} className="text-center">
+                Mengambil data...
+              </td>
+            </tr>
+          )}
           {getBulan.bulan !== "" &&
             data?.map((data: DataType, i) => (
               <tr key={i}>
