@@ -33,13 +33,16 @@ export default function LaporanAbsensi() {
     const fetchData = async () => {
       if (getBulan.idUser !== 0 && getBulan.bulan !== "") {
         try {
-          const getData = await fetch("http://localhost:3000/api/getdata", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(getBulan),
-          });
+          const getData = await fetch(
+            `${process.env.NEXT_PUBLIC_API_BASE_URL}/getdata`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(getBulan),
+            }
+          );
           const data = await getData.json();
           console.log(data);
           setData(data);
