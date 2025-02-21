@@ -10,10 +10,13 @@ export async function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith("/home") && !token) {
     return NextResponse.redirect(new URL("/api/auth/signin", request.url));
   }
+  if (request.nextUrl.pathname === "/") {
+    return NextResponse.redirect(new URL("/home", request.url));
+  }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/home/:path*"],
+  matcher: ["/home/:path*", "/"],
 };

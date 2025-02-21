@@ -1,4 +1,3 @@
-// "use client";
 import Link from "next/link";
 import CardProfile from "../components/CardProfile";
 import { getServerSession } from "next-auth";
@@ -40,14 +39,6 @@ export default async function Home() {
             </Link>
           )}
           <Logout />
-          {/* <button
-            type="button"
-            onClick={() => signOut()}
-            className="flex bg-green-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white"
-          >
-            Logout
-          </button> */}
-
           <div className="flex gap-4 items-center flex-col sm:flex-row"></div>
         </div>
       </main>

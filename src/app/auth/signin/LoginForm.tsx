@@ -37,7 +37,7 @@ export default function SignIn() {
     setLoading(true);
 
     const result = await signIn("credentials", {
-      redirect: false, // Prevent automatic redirect.
+      //   redirect: false, // Prevent automatic redirect.
       username: username,
       password: password,
     });
