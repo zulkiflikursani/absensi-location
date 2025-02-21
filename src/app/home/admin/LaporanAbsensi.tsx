@@ -77,7 +77,7 @@ export default function LaporanAbsensi() {
   }
   return (
     <div className=" min-h-screen flex-col mx-2 text-[10px]">
-      <div className="w-full grid grid-cols-2 my-2">
+      <div className="w-full grid grid-cols-2 my-2 bg-gray-100">
         <div className="col-span-1 grid grid-cols-2">
           <table className="">
             <tbody>
@@ -130,7 +130,7 @@ export default function LaporanAbsensi() {
           Print
         </button>
       </div>
-      <table className="w-full border-collapse border border-gray-300 bg-grey-100">
+      <table className="w-full border-collapse border border-gray-700 bg-white bg-grey-100">
         <thead>
           <tr className="">
             <th className="border border-gray-300 p-2">Tanggal</th>

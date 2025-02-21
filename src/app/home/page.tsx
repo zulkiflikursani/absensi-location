@@ -21,9 +21,10 @@ export default async function Home() {
           >
             Absen
           </Link>
-          <div className="flex bg-orange-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white">
+
+          {/* <div className="flex bg-orange-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white">
             Setting
-          </div>
+          </div> */}
           <Link
             href="/home/admin"
             className="flex bg-orange-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white"

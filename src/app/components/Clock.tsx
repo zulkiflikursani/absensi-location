@@ -18,7 +18,7 @@ const Clock = () => {
   });
 
   return (
-    <div className="flex flex-col justify-center items-center">
+    <div className="flex flex-col justify-center items-center bg-blue-500 rounded md:mx-52 mx-10 my-2 p-2 text-white">
       <div>
         <h2>Waktu Saat Ini:</h2>
       </div>

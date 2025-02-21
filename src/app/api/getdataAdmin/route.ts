@@ -20,6 +20,7 @@ export async function POST(req: NextRequest) {
     SELECT
         u.id AS idUser,
         u.username,
+        u.full_name,
         ds.tanggal,
         CONVERT_TZ(CAST(CONCAT(ds.tanggal, ' 07:30:00') AS DATETIME), '+00:00', '-08:00') AS jam_masuk,
         CONVERT_TZ(CAST(CONCAT(ds.tanggal, ' 16:00:00') AS DATETIME), '+00:00', '-08:00') AS jam_pulang,

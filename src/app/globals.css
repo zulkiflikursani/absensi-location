@@ -16,8 +16,12 @@
 */
 body {
   color: var(--foreground);
-  background-image: url("/background.png");
-  background-size: fill;
+  background-image: linear-gradient(
+      rgba(255, 255, 255, 0.2),
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("/BG.png");
+  background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }

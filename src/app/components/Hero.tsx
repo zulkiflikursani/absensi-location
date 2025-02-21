@@ -2,9 +2,9 @@ import React from "react";
 
 function Hero() {
   return (
-    <div className=" text-center my-3 text-red-600 text-2xl font-bold">
-      <div>SELAMAT DATANG !</div>
-      <div>MENYALA FECONKU !!! 🔥🔥🔥</div>
+    <div className=" text-center my-3 text-white bg-blue-500 p-2 text-2xl font-bold">
+      <div>SiPresisi Fecon</div>
+      {/* <div>MENYALA FECONKU !!! 🔥🔥🔥</div> */}
     </div>
   );
 }

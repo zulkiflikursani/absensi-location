@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 interface DataType {
   idUser: string;
   username: string;
+  full_name: string;
   tanggal: number;
   jam_masuk: Date;
   jam_pulang: Date;
@@ -68,7 +69,7 @@ export default function LaporanAbsensi() {
   return (
     <div className="min-h-screen flex-col mx-2 text-[10px]">
       {/* Pilihan Bulan */}
-      <div className="mb-4">
+      <div className="mb-4 bg-white mt-2 p-1">
         <label>Pilih Bulan: </label>
         <select
           onChange={(e) => setBulan({ bulan: e.target.value })}
@@ -105,14 +106,14 @@ export default function LaporanAbsensi() {
       {loading && <div className="text-center">Mengambil data...</div>}
       {Object.keys(groupedData).length > 0
         ? Object.entries(groupedData).map(([userId, userData]) => (
-            <div key={userId} className="mb-8">
+            <div key={userId} className="mb-8 bg-white">
               {/* Identitas User */}
-              <div className="mb-2">
+              <div className="mb-2 p-2">
                 <p>
                   <strong>ID:</strong> {userData[0].idUser}
                 </p>
                 <p>
-                  <strong>Nama:</strong> {userData[0].username}
+                  <strong>Nama:</strong> {userData[0].full_name}
                 </p>
               </div>
 

@@ -10,7 +10,7 @@ function Header() {
   const isHomePage = pathName === "/home";
   const isIndex = pathName === "/";
   return (
-    <div className="bg-blue-400 w-full flex h-20 items-center fixed top-0 left-0 z-50">
+    <div className="bg-blue-500 w-full flex h-20 items-center fixed top-0 left-0 z-50">
       {!isHomePage &&
         !isIndex && ( // Tampilkan tombol kembali HANYA jika BUKAN di halaman utama
           <svg

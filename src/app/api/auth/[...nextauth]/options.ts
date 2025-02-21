@@ -38,6 +38,9 @@ export const authOptions: NextAuthOptions = {
       },
     },
   ],
+  pages: {
+    signIn: "/auth/signin",
+  },
   callbacks: {
     async jwt({ token, user }) {
       // Merge user object into the token if available

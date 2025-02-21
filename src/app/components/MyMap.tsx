@@ -327,8 +327,12 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
             <p>Anda berada di luar jarak 1000 meter dari lokasi!</p>
           </div>
         )}
-
-        <div className="w-full p-5 flex justify-around">
+        {isValid === null && (
+          <p className="text-white items-center text-center">
+            Tekan tombol Masuk untuk memeriksa lokasi.
+          </p>
+        )}
+        <div className="w-full p-5 flex  justify-around">
           <button
             className="p-10 rounded-xl bg-blue-500 text-white font-bold h-40 disabled:bg-gray-500 "
             onClick={validateMasuk}
@@ -346,8 +350,6 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
           </button>
         </div>
         {/* <p>Jarak dari Lokasi Absen: {jarak} km</p> */}
-
-        {isValid === null && <p>Tekan tombol Masuk untuk memeriksa lokasi.</p>}
       </div>
     </div>
   );

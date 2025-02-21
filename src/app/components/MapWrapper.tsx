@@ -10,7 +10,7 @@ interface MapWrapperProps {
 
 const MapComponent = dynamic(() => import("./MyMap"), {
   ssr: false,
-  loading: () => <p>Loading map...</p>,
+  loading: () => <p className="text-center text-white">Loading map...</p>,
 });
 
 const MapWrapper: React.FC<MapWrapperProps> = ({
