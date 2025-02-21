@@ -73,7 +73,7 @@ export default function LaporanAbsensi() {
     return <div>Anda belum login.</div>;
   }
   return (
-    <div className=" min-h-screen flex-col mx-10">
+    <div className=" min-h-screen flex-col mx-2 text-[10px]">
       <div className="w-full grid grid-cols-2">
         <div className="col-span-1 grid grid-cols-2">
           <table className="">
