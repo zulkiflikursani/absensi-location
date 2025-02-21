@@ -13,7 +13,7 @@ declare module "next-auth" {
         username: string;
         full_name: string;
         email: string;
-        level: number;
+        level: string;
         company: number;
         bagian: number;
       };

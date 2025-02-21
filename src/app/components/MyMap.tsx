@@ -28,7 +28,7 @@ const PATENT_LOCATION: Location = {
 //   longitude: 118.98642921477968,
 // }; //lokasi unsulbar
 
-const VALIDATION_RADIUS_METERS = 1000;
+const VALIDATION_RADIUS_METERS = 40000;
 const VALIDATION_RADIUS_KM = VALIDATION_RADIUS_METERS / 1000;
 
 const calculateDistance = (
@@ -77,10 +77,14 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
     latitude: defaultLatitude,
     longitude: defaultLongitude,
   });
-  const [statusAbsesn, setStatusAbsesn] = useState<string | null>(null);
+  const [statusAbsesn, setStatusAbsesn] = useState<{
+    status: string;
+    message: string;
+  } | null>(null);
   const [isValid, setIsValid] = useState<boolean | null>(null);
   const [jarak, setJarak] = useState<number | null>(null);
   const mapRef = useRef<Map | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && navigator.geolocation) {
@@ -112,6 +116,7 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
   }, [location]);
 
   const validateMasuk = async () => {
+    setLoading(true);
     const session = await getSession();
     const distance = calculateDistance(
       { latitude: location.latitude ?? 0, longitude: location.longitude ?? 0 },
@@ -139,19 +144,27 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         });
         if (createMasuk.ok) {
           console.log("Berhasil masuk");
-          setStatusAbsesn("Berhasi Melakukan Absen Terima Kasih");
+          setStatusAbsesn({
+            status: "ok",
+            message: "Berhasi Melakukan Absen Terima Kasih",
+          });
         } else if (createMasuk.status === 409) {
           // Status code 409 (Conflict)
           const errorData = await createMasuk.json(); // Ambil response body (pesan error)
           console.warn("Sudah absen:", errorData.error);
-          setStatusAbsesn("Anda sudah melakukan absen untuk hari ini."); // Pesan yang lebih user-friendly
+          setStatusAbsesn({
+            status: "error",
+            message: "Anda sudah melakukan absen untuk hari ini.",
+          }); // Pesan yang lebih user-friendly
         } else {
           // Status code lainnya (selain 2xx dan 409)
           const errorData = await createMasuk.json();
           console.error("Error saat masuk:", createMasuk.status, errorData);
-          setStatusAbsesn(
-            "Terjadi kesalahan saat melakukan absen: " + createMasuk.status
-          );
+          setStatusAbsesn({
+            status: "error",
+            message:
+              "Terjadi kesalahan saat melakukan absen: " + createMasuk.status,
+          });
           // Atau, tampilkan pesan error yang lebih spesifik berdasarkan errorData
         }
       } catch (error) {
@@ -171,8 +184,10 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         );
       }
     }, 500); // Tunda 500ms (sesuaikan sesuai kebutuhan)
+    setLoading(false);
   };
   const validateKeluar = async () => {
+    setLoading(true);
     const session = await getSession();
     const distance = calculateDistance(
       { latitude: location.latitude ?? 0, longitude: location.longitude ?? 0 },
@@ -200,19 +215,27 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         });
         if (createMasuk.ok) {
           console.log("Berhasil keluar");
-          setStatusAbsesn("Berhasi Melakukan Absen Keluar Terima Kasih");
+          setStatusAbsesn({
+            status: "ok",
+            message: "Berhasi Melakukan Absen Keluar Terima Kasih",
+          });
         } else if (createMasuk.status === 409) {
           // Status code 409 (Conflict)
           const errorData = await createMasuk.json(); // Ambil response body (pesan error)
           console.warn("Sudah absen:", errorData.error);
-          setStatusAbsesn("Anda sudah melakukan absen keluar untuk hari ini."); // Pesan yang lebih user-friendly
+          setStatusAbsesn({
+            status: "error",
+            message: errorData.error as string,
+          }); // Pesan yang lebih user-friendly
         } else {
           // Status code lainnya (selain 2xx dan 409)
           const errorData = await createMasuk.json();
           console.error("Error saat masuk:", createMasuk.status, errorData);
-          setStatusAbsesn(
-            "Terjadi kesalahan saat melakukan absen: " + createMasuk.status
-          );
+          setStatusAbsesn({
+            status: "error",
+            message:
+              "Terjadi kesalahan saat melakukan absen: " + createMasuk.status,
+          });
           // Atau, tampilkan pesan error yang lebih spesifik berdasarkan errorData
         }
       } catch (error) {
@@ -232,6 +255,8 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         );
       }
     }, 500); // Tunda 500ms (sesuaikan sesuai kebutuhan)
+    setLoading(false);
+    console.log(jarak);
   };
 
   const customIcon = new L.Icon({
@@ -276,41 +301,52 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
               Absensi!
             </div>
           )}
-          {statusAbsesn !== null && statusAbsesn !== "" && (
-            <div className=" flex justify-center bg-green-600 p-2 m-2 rounded font-bold">
-              {statusAbsesn}
-            </div>
-          )}
+          {statusAbsesn?.message !== null &&
+            statusAbsesn?.message !== "" &&
+            statusAbsesn?.status === "ok" && (
+              <div className=" flex justify-center bg-green-600 p-2 m-2 rounded font-bold">
+                {statusAbsesn?.message}
+              </div>
+            )}
+          {statusAbsesn?.message !== null &&
+            statusAbsesn?.message !== "" &&
+            statusAbsesn?.status === "error" && (
+              <div className=" flex justify-center bg-red-600 p-2 m-2 rounded font-bold">
+                {statusAbsesn?.message}
+              </div>
+            )}
         </div>
+
+        {isValid === true && (
+          <div className="bg-green-400 rounded p-2 mx-2 text-center">
+            <p>Anda berada dalam jarak 1000 meter dari lokasi!</p>
+          </div>
+        )}
+        {isValid === false && (
+          <div className="bg-red-400 mx-2 rounded p-2 text-center">
+            <p>Anda berada di luar jarak 1000 meter dari lokasi!</p>
+          </div>
+        )}
+
         <div className="w-full p-5 flex justify-around">
           <button
             className="p-10 rounded-xl bg-blue-500 text-white font-bold h-40 disabled:bg-gray-500 "
             onClick={validateMasuk}
-            disabled={!mapLoaded}
+            disabled={!mapLoaded || loading}
           >
-            MASUK
+            {loading ? "Proses" : "MASUK"}
+            {/* MASUK */}
           </button>
           <button
             className="p-10 rounded-xl bg-orange-600 text-white font-bold h-40 disabled:bg-gray-500"
             onClick={validateKeluar}
-            disabled={!mapLoaded}
+            disabled={!mapLoaded || loading}
           >
-            KELUAR
+            {loading ? "Proses" : "KELUAR"}
           </button>
         </div>
-        <p>Jarak dari Lokasi Absen: {jarak} km</p>
-        {isValid === true && (
-          <p>
-            Anda berada dalam jarak {VALIDATION_RADIUS_METERS} meter dari
-            lokasi!
-          </p>
-        )}
-        {isValid === false && (
-          <p>
-            Anda berada di luar jarak {VALIDATION_RADIUS_METERS} meter dari
-            lokasi!
-          </p>
-        )}
+        {/* <p>Jarak dari Lokasi Absen: {jarak} km</p> */}
+
         {isValid === null && <p>Tekan tombol Masuk untuk memeriksa lokasi.</p>}
       </div>
     </div>

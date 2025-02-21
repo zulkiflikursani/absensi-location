@@ -11,6 +11,7 @@ interface RegistrationError {
 export default function RegisterForm() {
   const router = useRouter();
   const [username, setUsername] = useState<string>("");
+  const [full_name, setFullname] = useState<string>("");
   const [level, setLevel] = useState<string>("");
   const [company, setCompany] = useState<string>("");
   const [bagian, setBagian] = useState<string>("");
@@ -42,6 +43,7 @@ export default function RegisterForm() {
           level,
           bagian,
           company,
+          full_name,
         }),
       });
 
@@ -60,8 +62,8 @@ export default function RegisterForm() {
     }
   };
   const optionBagian = [
-    { value: "1", label: "Ekonomi" },
-    { value: "2", label: "Akuntansi" },
+    { value: "1", label: "AKUNTANSI" },
+    { value: "2", label: "MANAJEMEN" },
   ];
   const optionLevel = [
     { value: "1", label: "Admin" },
@@ -83,6 +85,13 @@ export default function RegisterForm() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+        />
+        <input
+          type="text"
+          className="mb-4 p-2 rounded border border-gray-300 active:border-primary-light"
+          placeholder="Nama Lengkap"
+          value={full_name}
+          onChange={(e) => setFullname(e.target.value)}
         />
         <input
           type="text"

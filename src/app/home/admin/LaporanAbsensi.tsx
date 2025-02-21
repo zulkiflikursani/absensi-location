@@ -77,7 +77,7 @@ export default function LaporanAbsensi() {
   }
   return (
     <div className=" min-h-screen flex-col mx-2 text-[10px]">
-      <div className="w-full grid grid-cols-2">
+      <div className="w-full grid grid-cols-2 my-2">
         <div className="col-span-1 grid grid-cols-2">
           <table className="">
             <tbody>
@@ -120,12 +120,12 @@ export default function LaporanAbsensi() {
           </table>
         </div>
       </div>
-      <div className="col-span-1">
+      <div className="col-span-1 my-2">
         {/* Tombol Print (tambahkan class "no-print") */}
         <button
           disabled={loading}
           onClick={() => window.print()}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded print:hidden"
+          className="bg-blue-500 hover:bg-blue-700 disabled:bg-gray-500 text-white font-bold py-2 px-4 rounded print:hidden"
         >
           Print
         </button>

@@ -12,6 +12,7 @@ interface RegistrationBody {
   level: string;
   bagian: string;
   company: string;
+  full_name: string;
 }
 
 interface RegistrationError {
@@ -23,7 +24,8 @@ export async function POST(
 ): Promise<NextResponse<RegistrationError | { message: string }>> {
   try {
     const body = (await req.json()) as RegistrationBody;
-    const { username, email, password, level, bagian, company } = body;
+    const { username, email, password, level, bagian, company, full_name } =
+      body;
 
     if (!email || !password || !username) {
       return NextResponse.json(
@@ -42,6 +44,7 @@ export async function POST(
         level: level,
         bagian: bagian,
         password: hashedPassword,
+        full_name: full_name,
       },
     });
 

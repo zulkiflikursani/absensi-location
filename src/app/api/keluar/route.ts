@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
 
     if (existingEntry) {
       return NextResponse.json(
-        { error: "Data masuk untuk tanggal ini sudah ada." },
+        { error: "Data keluar untuk tanggal ini sudah ada." },
         { status: 409 } // Gunakan status code 409 Conflict
       );
     }
