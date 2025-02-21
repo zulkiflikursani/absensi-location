@@ -117,7 +117,7 @@ export default function LaporanAbsensi() {
               </div>
 
               {/* Tabel Absensi */}
-              <table className="w-full border-collapse border border-gray-300 mt-2">
+              <table className="w-full border-collapse border border-gray-300 mt-2 bg-gray-50">
                 <thead>
                   <tr>
                     <th className="border border-gray-300 p-2">Tanggal</th>

@@ -9,7 +9,7 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
   return (
     <div className="flex flex-col flex-grow  font-[family-name:var(--font-geist-sans)]">
-      <main className="flex-grow w-full  p-5  items-start bg-gray-100 ">
+      <main className="flex-grow w-full  p-5  items-start  ">
         <CardProfile
           nama={session?.user.data.username}
           email={session?.user.data.email.toString()}

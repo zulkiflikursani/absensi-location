@@ -19,14 +19,14 @@ interface MyMapProps {
 //   longitude: 119.44737910612291,
 // }; //lolasi donat kampar
 
-const PATENT_LOCATION: Location = {
-  latitude: -5.404946417532999,
-  longitude: 119.44838713662129,
-}; //lokasi PDAM
 // const PATENT_LOCATION: Location = {
-//   latitude: -3.5283975106524754,
-//   longitude: 118.98642921477968,
-// }; //lokasi unsulbar
+//   latitude: -5.404946417532999,
+//   longitude: 119.44838713662129,
+// }; //lokasi PDAM
+const PATENT_LOCATION: Location = {
+  latitude: -3.5283975106524754,
+  longitude: 118.98642921477968,
+}; //lokasi unsulbar
 
 const VALIDATION_RADIUS_METERS = 40000;
 const VALIDATION_RADIUS_KM = VALIDATION_RADIUS_METERS / 1000;

@@ -130,7 +130,7 @@ export default function LaporanAbsensi() {
           Print
         </button>
       </div>
-      <table className="w-full border-collapse border border-gray-300">
+      <table className="w-full border-collapse border border-gray-300 bg-grey-100">
         <thead>
           <tr className="">
             <th className="border border-gray-300 p-2">Tanggal</th>
