@@ -78,13 +78,13 @@ export default function LaporanAbsensi() {
   return (
     <div className=" min-h-screen flex-col mx-2 text-[10px]">
       <div className="w-full grid grid-cols-2 my-2 bg-gray-100">
-        <div className="col-span-1 grid grid-cols-2">
-          <table className="">
+        <div className="col-span-2 ">
+          <table className="w-full ">
             <tbody>
               <tr>
                 <td>No ID</td>
                 <td>:</td>
-                <td>{sessionData?.user.data.id}</td>
+                <td>{sessionData?.user.data.username}</td>
               </tr>
               <tr>
                 <td>Nama</td>

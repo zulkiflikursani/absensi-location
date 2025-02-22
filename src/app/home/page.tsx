@@ -10,7 +10,7 @@ export default async function Home() {
     <div className="flex flex-col flex-grow  font-[family-name:var(--font-geist-sans)]">
       <main className="flex-grow w-full  p-5  items-start  ">
         <CardProfile
-          nama={session?.user.data.username}
+          nama={session?.user.data.full_name}
           email={session?.user.data.email.toString()}
         />
         <div className="w-full h-full grid grid-cols-2 gap-2">

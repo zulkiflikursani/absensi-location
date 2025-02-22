@@ -10,7 +10,7 @@ async function CardProfile(props: propsType) {
 
   return (
     <>
-      <div className="w-full grid grid-cols-6 bg-gray-200 rounded-lg mb-2 p-2">
+      <div className="w-full grid grid-cols-8 bg-gray-200 rounded-lg mb-2 p-2">
         <div className="col-span-2">
           <Image
             src={"/profile.png"}
@@ -19,7 +19,7 @@ async function CardProfile(props: propsType) {
             width={100}
           />
         </div>
-        <div className="col-span-4">
+        <div className="col-span-6">
           <div className="flex flex-col">
             <p className="text-lg font-bold">{props.nama}</p>
             <p>{props.email}</p>
