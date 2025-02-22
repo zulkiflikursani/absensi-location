@@ -67,7 +67,7 @@ export default function LaporanAbsensi() {
   console.log("groupeddata", groupedData);
 
   return (
-    <div className="min-h-screen flex-col mx-2 text-[10px]">
+    <div className="min-h-screen mt-5 flex-col mx-2 text-[10px]">
       {/* Pilihan Bulan */}
       <div className="mb-4 bg-white mt-2 p-1">
         <label>Pilih Bulan: </label>

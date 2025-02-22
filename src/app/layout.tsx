@@ -73,7 +73,7 @@ export default function RootLayout({
         >
           <div className="flex flex-col min-h-screen">
             <Header />
-            <div className="flex-grow mt-20">{children}</div>
+            <div className="flex-grow mt-20 print:mt-5">{children}</div>
             <Footer />
           </div>
         </body>

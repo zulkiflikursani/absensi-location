@@ -131,7 +131,7 @@ export default function LaporanAbsensi() {
         </button>
       </div>
       <table className="w-full border-collapse border border-gray-700 bg-white bg-grey-100">
-        <thead>
+        <thead className="table-header-group">
           <tr className="">
             <th className="border border-gray-300 p-2">Tanggal</th>
             <th className="border border-gray-300 p-2">Jam Masuk</th>
@@ -142,7 +142,7 @@ export default function LaporanAbsensi() {
             <th className="border border-gray-300 p-2">Jam Kerja</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="">
           {loading === true && (
             <tr>
               <td colSpan={7} className="text-center">
