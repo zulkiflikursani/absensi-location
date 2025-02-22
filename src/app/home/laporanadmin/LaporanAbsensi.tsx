@@ -110,7 +110,7 @@ export default function LaporanAbsensi() {
               {/* Identitas User */}
               <div className="mb-2 p-2">
                 <p>
-                  <strong>ID:</strong> {userData[0].idUser}
+                  <strong>ID:</strong> {userData[0].username}
                 </p>
                 <p>
                   <strong>Nama:</strong> {userData[0].full_name}
