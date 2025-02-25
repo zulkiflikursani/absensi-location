@@ -29,7 +29,7 @@ const PATENT_LOCATION: Location = {
 }; //lokasi unsulbar
 
 // const VALIDATION_RADIUS_METERS = 40000;
-const VALIDATION_RADIUS_METERS = 400000;
+const VALIDATION_RADIUS_METERS = 4000000;
 const VALIDATION_RADIUS_KM = VALIDATION_RADIUS_METERS / 1000;
 
 const calculateDistance = (
