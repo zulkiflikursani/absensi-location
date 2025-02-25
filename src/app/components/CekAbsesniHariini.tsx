@@ -25,7 +25,7 @@ function CekAbsesniHariini(props: { idUser: string }) {
           id: props.idUser,
         };
         const response = await fetch(
-          "http://localhost:3000/api/statusabsensi",
+          process.env.NEXT_PUBLIC_API_BASE_URL + "/statusabsensi",
           {
             method: "POST",
             headers: {
