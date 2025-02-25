@@ -3,6 +3,7 @@ import CardProfile from "../components/CardProfile";
 import { getServerSession } from "next-auth";
 import authOptions from "../api/auth/[...nextauth]/options";
 import Logout from "../components/Logout";
+import CekAbsesniHariini from "../components/CekAbsesniHariini";
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -13,6 +14,11 @@ export default async function Home() {
           nama={session?.user.data.full_name}
           email={session?.user.data.email.toString()}
         />
+        <div className="mx-2 ">
+          {session?.user.data.id && (
+            <CekAbsesniHariini idUser={session?.user.data.id} />
+          )}
+        </div>
         <div className="w-full h-full grid grid-cols-2 gap-2">
           <Link
             href="/home/absen"
