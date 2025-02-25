@@ -18,12 +18,19 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
     const startOfDay = new Date(data.waktu);
-    startOfDay.setHours(0, 0, 0, 0);
+    startOfDay.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
+    startOfDay.setHours(startOfDay.getHours() - 8); // Shift back to the beginning of today in UTC+8
 
     const endOfDay = new Date(data.waktu);
-    endOfDay.setHours(23, 59, 59, 999);
+    endOfDay.setUTCHours(23, 59, 59, 999); //start of *tomorrow* in UTC
+    endOfDay.setHours(endOfDay.getHours() - 8); //shift to the beginning of tommorow in UTC+8
+
+    // const startOfDay = new Date(data.waktu);
+    // startOfDay.setHours(0, 0, 0, 0);
+
+    // const endOfDay = new Date(data.waktu);
+    // endOfDay.setHours(23, 59, 59, 999);
 
     console.log("star :", startOfDay + " end: " + endOfDay);
     console.log("masuk", data.waktu);
