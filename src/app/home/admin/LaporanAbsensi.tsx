@@ -164,12 +164,12 @@ export default function LaporanAbsensi() {
                 </td>
                 <td className="border border-gray-300 p-2">
                   {data.waktu_masuk && moment(data.waktu_masuk).isValid()
-                    ? moment(data.waktu_masuk).format("HH:mm")
+                    ? moment(data.waktu_masuk).tz("utc").format("HH:mm")
                     : "-"}
                 </td>
                 <td className="border border-gray-300 p-2">
                   {data.waktu_keluar && moment(data.waktu_keluar).isValid()
-                    ? moment(data.waktu_keluar).format("HH:mm")
+                    ? moment(data.waktu_keluar).tz("utc").format("HH:mm")
                     : "-"}
                 </td>
                 <td className="border border-gray-300 p-2">

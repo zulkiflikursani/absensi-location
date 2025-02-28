@@ -8,6 +8,9 @@ interface TypeMasuk {
 export async function POST(request: NextRequest) {
   const body = await request.json();
   const data: TypeMasuk = body;
+  const waktu = new Date(data.waktu);
+  // const waktu = new Date("2025-02-28 07:19:45+08:00");
+  waktu.setHours(waktu.getHours() + 8);
   // console.log(data);
   try {
     // console.log("data", data);
@@ -20,15 +23,17 @@ export async function POST(request: NextRequest) {
     }
 
     const startOfDay = new Date(data.waktu);
+    startOfDay.toLocaleString("id-ID", { timeZone: "Asia/Makassar" });
     startOfDay.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
     startOfDay.setHours(startOfDay.getHours() - 8); // Shift back to the beginning of today in UTC+8
 
     const endOfDay = new Date(data.waktu);
+    endOfDay.toLocaleString("id-ID", { timeZone: "Asia/Makassar" });
     endOfDay.setUTCHours(23, 59, 59, 999); //start of *tomorrow* in UTC
     endOfDay.setHours(endOfDay.getHours() - 8); //shift to the beginning of tommorow in UTC+8
 
     console.log("star :", startOfDay + " end: " + endOfDay);
-    console.log("masuk", data.waktu);
+    console.log("masuk", waktu);
     const existingEntry = await prisma.masuk.findFirst({
       where: {
         idUser: data.id,
@@ -48,7 +53,7 @@ export async function POST(request: NextRequest) {
     const createMasuk = await prisma.masuk.create({
       data: {
         idUser: data.id,
-        waktu: new Date(data.waktu),
+        waktu: new Date(waktu),
       },
     });
     return NextResponse.json(createMasuk);

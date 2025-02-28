@@ -19,22 +19,22 @@ export async function POST(req: NextRequest) {
     )
     SELECT
         ds.tanggal,
-        CONVERT_TZ(CAST(CONCAT(ds.tanggal, ' 07:30:00') AS DATETIME), '+00:00', '-08:00') AS jam_masuk,
-        CONVERT_TZ(CAST(CONCAT(ds.tanggal, ' 16:00:00') AS DATETIME), '+00:00', '-08:00') AS jam_pulang,
+        CONCAT(ds.tanggal, ' 07:30:00') AS jam_masuk,
+        CONCAT(ds.tanggal, ' 16:00:00') AS jam_pulang,
         m.waktu AS waktu_masuk,  -- Earliest 'masuk' time
         k.waktu AS waktu_keluar,   -- Latest 'keluar' time
        CAST(TIMESTAMPDIFF(MINUTE, MIN(m.waktu), MAX(k.waktu)) AS UNSIGNED) AS selisih_menit,
          CAST(TIMESTAMPDIFF(
         MINUTE,
-        CONVERT_TZ(CAST(CONCAT(ds.tanggal, ' 07:30:00') AS DATETIME), '+00:00', '-08:00'), -- 08:00 Asia/Makassar
-        MIN(m.waktu)  -- Waktu masuk (dalam UTC+7)
+        CONCAT(ds.tanggal, ' 07:30:00'), 
+        MIN(m.waktu)  
     ) AS SIGNED) AS terlambat
     FROM
         DateSeries ds
     LEFT JOIN
-        masuk m ON DATE(ds.tanggal) =DATE(CONVERT_TZ(m.waktu,'+00:00','+08:00')) AND m.idUser = ${data.idUser}
+        masuk m ON DATE(ds.tanggal) =DATE(m.waktu) AND m.idUser = ${data.idUser}
     LEFT JOIN
-        keluar k ON DATE(ds.tanggal) = DATE(CONVERT_TZ(k.waktu,'+00:00','+08:00'))AND k.idUser = ${data.idUser}
+        keluar k ON DATE(ds.tanggal) = DATE(k.waktu)AND k.idUser = ${data.idUser}
     GROUP BY
         ds.tanggal
     ORDER BY

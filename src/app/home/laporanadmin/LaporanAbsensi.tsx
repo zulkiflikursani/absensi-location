@@ -24,11 +24,12 @@ export default function LaporanAbsensi() {
   const { status } = useSession();
   const [data, setData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
+  // const [first, setFirst] = useState(false);
   const [getBulan, setBulan] = useState<BodyType>({ bulan: "" });
 
   useEffect(() => {
     const fetchData = async () => {
-      if (getBulan.bulan !== "") {
+      if (getBulan.bulan !== "" || getBulan.bulan !== null) {
         try {
           setLoading(true);
           const getData = await fetch(
@@ -42,6 +43,7 @@ export default function LaporanAbsensi() {
           const result = await getData.json();
           setData(result);
           setLoading(false);
+          console.log(result);
         } catch (error) {
           console.error(error);
           setLoading(false);
@@ -63,8 +65,6 @@ export default function LaporanAbsensi() {
         return acc;
       }, {} as Record<string, DataType[]>)
     : {};
-
-  console.log("groupeddata", groupedData);
 
   return (
     <div className="min-h-screen mt-5 flex-col mx-2 text-[10px]">
@@ -144,13 +144,13 @@ export default function LaporanAbsensi() {
                       </td>
                       <td className="border border-gray-300 p-2">
                         {data.waktu_masuk && moment(data.waktu_masuk).isValid()
-                          ? moment(data.waktu_masuk).format("HH:mm")
+                          ? moment(data.waktu_masuk).tz("utc").format("HH:mm")
                           : "-"}
                       </td>
                       <td className="border border-gray-300 p-2">
                         {data.waktu_keluar &&
                         moment(data.waktu_keluar).isValid()
-                          ? moment(data.waktu_keluar).format("HH:mm")
+                          ? moment(data.waktu_keluar).tz("utc").format("HH:mm")
                           : "-"}
                       </td>
                       <td className="border border-gray-300 p-2">

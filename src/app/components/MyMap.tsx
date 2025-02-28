@@ -19,14 +19,14 @@ interface MyMapProps {
 //   longitude: 119.44737910612291,
 // }; //lolasi donat kampar
 
-// const PATENT_LOCATION: Location = {
-//   latitude: -5.404946417532999,
-//   longitude: 119.44838713662129,
-// }; //lokasi PDAM
 const PATENT_LOCATION: Location = {
-  latitude: -3.5283975106524754,
-  longitude: 118.98642921477968,
-}; //lokasi unsulbar
+  latitude: -5.404946417532999,
+  longitude: 119.44838713662129,
+}; //lokasi PDAM
+// const PATENT_LOCATION: Location = {
+//   latitude: -3.5283975106524754,
+//   longitude: 118.98642921477968,
+// }; //lokasi unsulbar
 
 const VALIDATION_RADIUS_METERS = 40000;
 // const VALIDATION_RADIUS_METERS = 4000000;
@@ -202,9 +202,7 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
         const now = new Date();
         const witaTime = moment(now).tz("Asia/Makassar"); // Konversi ke WITA
         const formattedWita = witaTime.format("YYYY-MM-DD HH:mm:ssZ"); // Format
-
-        console.log(formattedWita);
-        const createMasuk = await fetch("/api/keluar", {
+        const createKeluar = await fetch("/api/keluar", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -214,15 +212,14 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
             waktu: formattedWita,
           }),
         });
-        if (createMasuk.ok) {
-          console.log("Berhasil keluar");
+        if (createKeluar.ok) {
           setStatusAbsesn({
             status: "ok",
             message: "Berhasi Melakukan Absen Keluar Terima Kasih",
           });
-        } else if (createMasuk.status === 409) {
+        } else if (createKeluar.status === 409) {
           // Status code 409 (Conflict)
-          const errorData = await createMasuk.json(); // Ambil response body (pesan error)
+          const errorData = await createKeluar.json(); // Ambil response body (pesan error)
           console.warn("Sudah absen:", errorData.error);
           setStatusAbsesn({
             status: "error",
@@ -230,12 +227,12 @@ const MyMap: React.FC<MyMapProps> = ({ defaultLatitude, defaultLongitude }) => {
           }); // Pesan yang lebih user-friendly
         } else {
           // Status code lainnya (selain 2xx dan 409)
-          const errorData = await createMasuk.json();
-          console.error("Error saat masuk:", createMasuk.status, errorData);
+          const errorData = await createKeluar.json();
+          console.error("Error saat masuk:", createKeluar.status, errorData);
           setStatusAbsesn({
             status: "error",
             message:
-              "Terjadi kesalahan saat melakukan absen: " + createMasuk.status,
+              "Terjadi kesalahan saat melakukan absen: " + createKeluar.status,
           });
           // Atau, tampilkan pesan error yang lebih spesifik berdasarkan errorData
         }
