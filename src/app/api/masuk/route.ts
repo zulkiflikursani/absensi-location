@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     const todayUTCPlus8End = new Date(now);
     todayUTCPlus8End.setUTCHours(24, 0, 0, 0); //start of *tomorrow* in UTC
-    todayUTCPlus8End.setHours(todayUTCPlus8End.getHours() - 8); //shift to the beginning of tommorow in UTC+8
+    // todayUTCPlus8End.setHours(todayUTCPlus8End.getHours() - 8); //shift to the beginning of tommorow in UTC+8
 
     console.log("star :", todayUTCPlus8Start + " end: " + todayUTCPlus8End);
     console.log("masuk", waktu);
