@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/app/lib/prisma";
+import { formatInTimeZone } from "date-fns-tz";
 
 interface TypeMasuk {
   id: number;
@@ -22,58 +23,46 @@ export async function POST(request: NextRequest) {
       );
     }
     const now = new Date();
-    const todayUTCPlus8Start = new Date(now);
-    todayUTCPlus8Start.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
-    todayUTCPlus8Start.setHours(todayUTCPlus8Start.getHours() - 8); // Shift back to the beginning of today in UTC+8
+    const timeZone = "Asia/Makassar";
+    const nowMks = formatInTimeZone(now, timeZone, "yyyy-MM-dd");
 
-    const todayUTCPlus8End = new Date(now);
-    todayUTCPlus8End.setUTCHours(24, 0, 0, 0); //start of *tomorrow* in UTC
-    todayUTCPlus8End.setHours(todayUTCPlus8End.getHours()); //shift to the beginning of tommorow in UTC+8
+    const query = `SELECT COUNT(*) AS count
+        FROM masuk
+        WHERE DATE(waktu) = ? and idUser = ?`;
+    const cekAbsenMasuk = await prisma.$queryRawUnsafe<{ count: number }[]>(
+      query,
+      nowMks,
+      data.id
+    );
+    const querykeluar = `SELECT COUNT(*) AS count
+    FROM keluar
+    WHERE DATE(waktu) = ? and idUser = ?`;
+    const existingEntry = await prisma.$queryRawUnsafe<{ count: number }[]>(
+      querykeluar,
+      nowMks,
+      data.id
+    );
 
-    // const startOfDay = new Date(data.waktu);
-    // startOfDay.setHours(0, 0, 0, 0);
-
-    // const endOfDay = new Date(data.waktu);
-    // endOfDay.setHours(23, 59, 59, 999);
-
-    const existingEntry = await prisma.keluar.findFirst({
-      where: {
-        idUser: data.id,
-        waktu: {
-          gte: todayUTCPlus8Start,
-          lt: todayUTCPlus8End,
-        },
-      },
-    });
-
-    if (existingEntry) {
+    if (existingEntry && existingEntry[0] && existingEntry[0].count > 0) {
       return NextResponse.json(
         { error: "Data keluar untuk tanggal ini sudah ada." },
         { status: 409 } // Gunakan status code 409 Conflict
       );
     }
-    const cekAbsenMasuk = await prisma.masuk.findFirst({
-      where: {
-        idUser: data.id,
-        waktu: {
-          gte: todayUTCPlus8Start,
-          lt: todayUTCPlus8End,
+    if (cekAbsenMasuk && cekAbsenMasuk[0] && cekAbsenMasuk[0].count > 0) {
+      const createKeluar = await prisma.keluar.create({
+        data: {
+          idUser: data.id,
+          waktu: new Date(waktu),
         },
-      },
-    });
-    if (!cekAbsenMasuk) {
+      });
+      return NextResponse.json(createKeluar);
+    } else {
       return NextResponse.json(
         { error: "Data masuk untuk tanggal ini belum ada." },
         { status: 409 } // Gunakan status code 409 Conflict
       );
     }
-    const createKeluar = await prisma.keluar.create({
-      data: {
-        idUser: data.id,
-        waktu: new Date(waktu),
-      },
-    });
-    return NextResponse.json(createKeluar);
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(

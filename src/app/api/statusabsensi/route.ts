@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
+import { formatInTimeZone } from "date-fns-tz";
 interface TypeMasuk {
   id: number;
 }
@@ -10,42 +10,29 @@ export async function POST(request: NextRequest) {
   const prisma = new PrismaClient();
   // console.log(data);
   try {
-    // console.log("data", data);
-    // Validasi data.waktu (sangat penting)
     const now = new Date();
-    const todayUTCPlus8Start = new Date(now);
-    todayUTCPlus8Start.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
-    todayUTCPlus8Start.setHours(todayUTCPlus8Start.getHours() + 8); // Shift back to the beginning of today in UTC+8
-
-    const todayUTCPlus8End = new Date(now);
-    todayUTCPlus8End.setUTCHours(24, 0, 0, 0); //start of *tomorrow* in UTC
-    todayUTCPlus8End.setHours(todayUTCPlus8End.getHours() + 8); //shift to the beginning of tommorow in UTC+8
+    const timeZone = "Asia/Makassar";
+    const nowMks = formatInTimeZone(now, timeZone, "yyyy-MM-dd");
 
     if (!data.id || typeof data.id !== "string") {
-      const result = await prisma.masuk.findFirst({
-        where: {
-          idUser: data.id,
-          waktu: {
-            gte: todayUTCPlus8Start, // Start of today (UTC)
-            lt: todayUTCPlus8End, // Start of tomorrow (UTC) - effectively end of today
-          },
-        },
-      });
-      console.log("data:", result);
-      if (result) {
-        const cek = await prisma.keluar.findFirst({
-          where: {
-            idUser: data.id,
-            waktu: {
-              gte: todayUTCPlus8Start, // Start of today (UTC)
-              lt: todayUTCPlus8End, // Start of tomorrow (UTC) - effectively end of today
-            },
-          },
-        });
-        console.log("data:", cek);
-        console.log("waktustart:", todayUTCPlus8Start);
-        console.log("waktusend:", todayUTCPlus8End);
-        if (cek) {
+      const query = `SELECT COUNT(*) AS count
+                        FROM masuk
+                        WHERE DATE(waktu) = ? and idUser = ?`;
+      const result = await prisma.$queryRawUnsafe<{ count: number }[]>(
+        query,
+        nowMks,
+        data.id
+      );
+      if (result && result[0] && result[0].count > 0) {
+        const query = `SELECT COUNT(*) AS count
+        FROM keluar
+        WHERE DATE(waktu) = ? and idUser=?`;
+        const cek = await prisma.$queryRawUnsafe<{ count: number }[]>(
+          query,
+          nowMks,
+          data.id
+        );
+        if (cek && cek[0] && cek[0].count > 0) {
           return NextResponse.json({
             message: "Anda Sudah Melakukan Absen Keluar",
           });
@@ -62,7 +49,15 @@ export async function POST(request: NextRequest) {
     } else {
       return NextResponse.json({ message: data });
     }
-  } catch (error) {
-    console.log(error);
+  } catch (error: unknown) {
+    // const a = error;
+    if (error instanceof Error) {
+      return NextResponse.json({ message: error.message });
+    } else {
+      return NextResponse.json({ message: String(error) });
+    }
+    // return NextResponse.json({ message: error.toString() });
+
+    // console.log(error);
   }
 }
