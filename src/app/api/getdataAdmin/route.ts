@@ -38,9 +38,11 @@ export async function POST(req: NextRequest) {
     CROSS JOIN
         DateSeries ds
     LEFT JOIN
-        masuk m ON DATE(ds.tanggal) =DATE(m.waktu) AND m.idUser = u.id
+        masuk m ON DATE(ds.tanggal) =DATE(m.waktu) AND m.idUser = u.id 
     LEFT JOIN
         keluar k ON DATE(ds.tanggal) = DATE(k.waktu)AND k.idUser = u.id
+    where
+        u.id != '2' 
     GROUP BY
         u.id, ds.tanggal
     ORDER BY
