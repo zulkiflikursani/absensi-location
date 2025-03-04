@@ -21,15 +21,14 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const startOfDay = new Date(data.waktu);
-    startOfDay.toLocaleString("id-ID", { timeZone: "Asia/Makassar" });
-    startOfDay.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
-    startOfDay.setHours(startOfDay.getHours() - 8); // Shift back to the beginning of today in UTC+8
+    const now = new Date();
+    const todayUTCPlus8Start = new Date(now);
+    todayUTCPlus8Start.setUTCHours(0, 0, 0, 0); // Start of *today* in UTC
+    todayUTCPlus8Start.setHours(todayUTCPlus8Start.getHours() - 8); // Shift back to the beginning of today in UTC+8
 
-    const endOfDay = new Date(data.waktu);
-    endOfDay.toLocaleString("id-ID", { timeZone: "Asia/Makassar" });
-    endOfDay.setUTCHours(23, 59, 59, 999); //start of *tomorrow* in UTC
-    endOfDay.setHours(endOfDay.getHours() - 8); //shift to the beginning of tommorow in UTC+8
+    const todayUTCPlus8End = new Date(now);
+    todayUTCPlus8End.setUTCHours(24, 0, 0, 0); //start of *tomorrow* in UTC
+    todayUTCPlus8End.setHours(todayUTCPlus8End.getHours()); //shift to the beginning of tommorow in UTC+8
 
     // const startOfDay = new Date(data.waktu);
     // startOfDay.setHours(0, 0, 0, 0);
@@ -37,14 +36,12 @@ export async function POST(request: NextRequest) {
     // const endOfDay = new Date(data.waktu);
     // endOfDay.setHours(23, 59, 59, 999);
 
-    console.log("star :", startOfDay + " end: " + endOfDay);
-    console.log("keluar", data.waktu);
     const existingEntry = await prisma.keluar.findFirst({
       where: {
         idUser: data.id,
         waktu: {
-          gte: startOfDay,
-          lt: endOfDay,
+          gte: todayUTCPlus8Start,
+          lt: todayUTCPlus8End,
         },
       },
     });
@@ -59,8 +56,8 @@ export async function POST(request: NextRequest) {
       where: {
         idUser: data.id,
         waktu: {
-          gte: startOfDay,
-          lt: endOfDay,
+          gte: todayUTCPlus8Start,
+          lt: todayUTCPlus8End,
         },
       },
     });

@@ -43,7 +43,7 @@ export default function LaporanAbsensi() {
           const result = await getData.json();
           setData(result);
           setLoading(false);
-          console.log(result);
+          console.log("result :", result);
         } catch (error) {
           console.error(error);
           setLoading(false);
