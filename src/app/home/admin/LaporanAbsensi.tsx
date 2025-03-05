@@ -15,6 +15,7 @@ interface DataType {
 interface BodyType {
   bulan: string;
   idUser: number;
+  bagian: string;
 }
 export default function LaporanAbsensi() {
   // const session = useSession();
@@ -25,10 +26,8 @@ export default function LaporanAbsensi() {
   const [getBulan, setBulan] = useState<BodyType>({
     bulan: "",
     idUser: 0,
+    bagian: "",
   });
-  // setBulan({
-  //   bulan: "2025-02-01",
-  // });
 
   useEffect(() => {
     const fetchData = async () => {

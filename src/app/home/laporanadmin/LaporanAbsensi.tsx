@@ -18,6 +18,7 @@ interface DataType {
 
 interface BodyType {
   bulan: string;
+  bagian: string;
 }
 
 export default function LaporanAbsensi() {
@@ -25,7 +26,7 @@ export default function LaporanAbsensi() {
   const [data, setData] = useState<DataType[]>([]);
   const [loading, setLoading] = useState(false);
   // const [first, setFirst] = useState(false);
-  const [getBulan, setBulan] = useState<BodyType>({ bulan: "" });
+  const [getBulan, setBulan] = useState<BodyType>({ bulan: "", bagian: "" });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,10 +70,12 @@ export default function LaporanAbsensi() {
   return (
     <div className="min-h-screen mt-5 flex-col mx-2 text-[10px]">
       {/* Pilihan Bulan */}
-      <div className="mb-4 bg-white mt-2 p-1">
+      <div className="mb-2 bg-white mt-2 p-1">
         <label>Pilih Bulan: </label>
         <select
-          onChange={(e) => setBulan({ bulan: e.target.value })}
+          onChange={(e) =>
+            setBulan((prev) => ({ ...prev, bulan: e.target.value }))
+          }
           className="border p-1"
         >
           <option value="">Pilih Bulan</option>
@@ -88,6 +91,19 @@ export default function LaporanAbsensi() {
           <option value="2025-10-01">Oktober</option>
           <option value="2025-11-01">November</option>
           <option value="2025-12-01">Desember</option>
+        </select>
+      </div>
+      <div className="mb-4 bg-white  p-1">
+        <label>Pilih Prodi: </label>
+        <select
+          onChange={(e) =>
+            setBulan((prev) => ({ ...prev, bagian: e.target.value }))
+          }
+          className="border p-1"
+        >
+          <option value="">Pilih Prodi</option>
+          <option value="1">Akuntansi</option>
+          <option value="2">Manajemen</option>
         </select>
       </div>
 

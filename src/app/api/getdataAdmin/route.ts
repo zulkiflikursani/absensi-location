@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 interface TypeBody {
   bulan: string;
+  bagian: string;
   // idUser: string;
 }
 
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
         keluar k ON DATE(ds.tanggal) = DATE(k.waktu)AND k.idUser = u.id
     where
         u.id != '2' 
+        and u.bagian = '${data.bagian}'
     GROUP BY
         u.id, ds.tanggal
     ORDER BY
