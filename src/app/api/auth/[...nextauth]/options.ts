@@ -29,7 +29,7 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
           console.error("Login failed:", data.message); // Log error from api
-          console.log("user :", data);
+          // console.log("user :", data);
           return data.data;
         } catch (error) {
           console.error("Error during login:", error);

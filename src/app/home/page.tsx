@@ -37,12 +37,20 @@ export default async function Home() {
             Laporan
           </Link>
           {session?.user.data.level === "1" && (
-            <Link
-              href="/home/laporanadmin"
-              className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
-            >
-              Laporan Admin
-            </Link>
+            <>
+              <Link
+                href="/home/laporanadmin"
+                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
+              >
+                Laporan Admin
+              </Link>
+              <Link
+                href="/home/admin/adminmasuk"
+                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
+              >
+                Edit Data Masuk
+              </Link>
+            </>
           )}
           <Logout />
           <div className="flex gap-4 items-center flex-col sm:flex-row"></div>

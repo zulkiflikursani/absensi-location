@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
         u.id AS idUser,
         u.username,
         u.full_name,
+        u.bagian,
         ds.tanggal,
         CONCAT(ds.tanggal, ' 07:30:00')  AS jam_masuk,
         CONCAT(ds.tanggal, ' 16:00:00') AS jam_pulang,

@@ -8,6 +8,7 @@ interface MasukData {
   id: number;
   idUser: number;
   waktu: string;
+  bagian: string;
   full_name: string;
   createdAt: string;
 }

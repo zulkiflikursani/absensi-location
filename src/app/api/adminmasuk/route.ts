@@ -8,7 +8,7 @@ export async function GET() {
   const prisma = new PrismaClient();
   try {
     const query = `
-      SELECT m.id, m.idUser, m.waktu, m.createdAt, u.full_name
+      SELECT m.id, m.idUser, m.waktu, m.createdAt,u.bagian, u.full_name
       FROM masuk m
       JOIN users u ON m.idUser = u.id
       ORDER BY m.idUser, m.waktu ASC;

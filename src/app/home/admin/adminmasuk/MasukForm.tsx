@@ -1,6 +1,7 @@
 // src/app/masuk/MasukForm.tsx
 "use client";
 import React, { useState, useEffect } from "react";
+// import { format, toZonedTime } from "date-fns-tz";
 
 interface MasukFormProps {
   initialData?: { id: number; idUser: number; waktu: string };
@@ -23,16 +24,37 @@ const MasukForm: React.FC<MasukFormProps> = ({
 
   // Reset form saat initialData berubah (untuk edit)
   useEffect(() => {
-    setIdUser(initialData?.idUser || 0);
-    setWaktu(initialData?.waktu || "");
+    // let formattedWaktu = "";
+    if (initialData) {
+      setIdUser(initialData.idUser);
+      //Format waktu to datetime-local format. No Timezone needed
+      if (initialData.waktu) {
+        try {
+          const formattedWaktu = new Date(initialData.waktu)
+            .toISOString()
+            .slice(0, 16);
+          setWaktu(formattedWaktu);
+        } catch (error) {
+          console.error("Error parsing date:", error);
+          setWaktu("");
+        }
+      } else {
+        setWaktu("");
+      }
+    } else {
+      // Reset form if initialData is undefined (e.g., for creating new entries)
+      setIdUser(0);
+      setWaktu("");
+    }
     setError("");
   }, [initialData]);
-
+  const handleWaktuChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setWaktu(e.target.value); // Directly update the state with the input value
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     // Validasi input (contoh sederhana)
     if (!idUser) {
       setError("ID User harus diisi.");
@@ -79,7 +101,7 @@ const MasukForm: React.FC<MasukFormProps> = ({
           id="waktu"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           value={waktu}
-          onChange={(e) => setWaktu(e.target.value)}
+          onChange={handleWaktuChange}
           disabled={loading}
         />
       </div>

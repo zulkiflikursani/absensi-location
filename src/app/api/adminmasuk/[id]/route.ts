@@ -9,7 +9,8 @@ export async function DELETE(
   { params }: { params: Promise<{ id: number }> }
 ) {
   const prisma = new PrismaClient();
-  const { id } = await params; // Konversi ID ke integer
+  // const { id } = await params; // Konversi ID ke integer
+  const id = parseInt((await params).id.toString(), 10);
 
   if (isNaN(id)) {
     return NextResponse.json({ message: "ID tidak valid." }, { status: 400 });
