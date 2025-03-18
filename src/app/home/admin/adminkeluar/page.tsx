@@ -1,10 +1,10 @@
 // src/app/masuk/page.tsx
 "use client";
 import React, { useState, useEffect } from "react";
-import MasukTable from "./MasukTable";
-import MasukForm from "./MasukForm";
+import KeluarTable from "./KeluarTable";
+import KeluarForm from "./KeluarForm";
 
-interface MasukData {
+interface KeluarData {
   id: number;
   idUser: number;
   waktu: string;
@@ -13,8 +13,8 @@ interface MasukData {
   createdAt: string;
 }
 
-const MasukPage = () => {
-  const [data, setData] = useState<MasukData[]>([]);
+const KeluarPage = () => {
+  const [data, setData] = useState<KeluarData[]>([]);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [refresh, setRefresh] = useState(false); // Untuk memicu re-render setelah update/delete
@@ -22,7 +22,7 @@ const MasukPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("/api/adminmasuk");
+        const response = await fetch("/api/adminkeluar");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -41,17 +41,17 @@ const MasukPage = () => {
     setEditingId(id);
     setShowForm(true);
   };
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth", // Untuk animasi scrolling yang halus
     });
   };
-
   const handleDelete = async (id: number) => {
     if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
       try {
-        const response = await fetch(`/api/adminmasuk/${id}`, {
+        const response = await fetch(`/api/adminkeluar/${id}`, {
           method: "DELETE",
         });
         if (!response.ok) {
@@ -71,7 +71,7 @@ const MasukPage = () => {
   ) => {
     try {
       const method = id ? "PATCH" : "POST";
-      const url = id ? `/api/adminmasuk/${id}` : "/api/adminmasuk";
+      const url = id ? `/api/adminkeluar/${id}` : "/api/adminkeluar";
 
       const response = await fetch(url, {
         method,
@@ -112,7 +112,7 @@ const MasukPage = () => {
 
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">Jadwal Masuk</h1>
+      <h1 className="text-2xl font-bold mb-4">Jadwal Keluar</h1>
       <button
         className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mb-4"
         onClick={handleAdd}
@@ -120,15 +120,15 @@ const MasukPage = () => {
         Tambah Data
       </button>
       {showForm && (
-        <MasukForm
+        <KeluarForm
           initialData={editedData}
           onSave={handleSave}
           onCancel={handleCancel}
         />
       )}
-      <MasukTable data={data} onEdit={handleEdit} onDelete={handleDelete} />
+      <KeluarTable data={data} onEdit={handleEdit} onDelete={handleDelete} />
     </div>
   );
 };
 
-export default MasukPage;
+export default KeluarPage;

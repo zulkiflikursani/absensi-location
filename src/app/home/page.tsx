@@ -40,15 +40,21 @@ export default async function Home() {
             <>
               <Link
                 href="/home/laporanadmin"
-                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
+                className="flex bg-indigo-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
               >
                 Laporan Admin
               </Link>
               <Link
                 href="/home/admin/adminmasuk"
-                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
+                className="flex bg-green-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
               >
                 Edit Data Masuk
+              </Link>
+              <Link
+                href="/home/admin/adminkeluar"
+                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
+              >
+                Edit Data Keluar
               </Link>
             </>
           )}
