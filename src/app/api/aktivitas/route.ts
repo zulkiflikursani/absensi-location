@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     const userIdInt = parseInt(String(idUser), 10);
     const timeZone = "Asia/Makassar"; // Sesuaikan
     const waktuDate = new Date();
-    // waktuDate.setHours(waktuDate.getHours() + 8);
+    waktuDate.setHours(waktuDate.getHours() + 8);
     const waktuUTC = toZonedTime(waktuDate, timeZone);
 
     const now = new Date();
@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         WHERE DATE(waktu) = ? and idUser = ?`;
     const result = await prisma.$queryRawUnsafe<{ count: number }[]>(
       query,
-      nowMks,
+      waktuUTC,
       userIdInt
     );
     if (result && result[0] && result[0].count > 0) {
