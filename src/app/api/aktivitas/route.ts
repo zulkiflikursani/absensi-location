@@ -23,14 +23,15 @@ export async function POST(req: NextRequest) {
     }
 
     const userIdInt = parseInt(String(idUser), 10);
-
     const timeZone = "Asia/Makassar"; // Sesuaikan
     const waktuDate = new Date();
-    waktuDate.setHours(waktuDate.getHours() + 8);
+    // waktuDate.setHours(waktuDate.getHours() + 8);
     const waktuUTC = toZonedTime(waktuDate, timeZone);
 
     const now = new Date();
+    // now.setHours(now.getHours() + 8);
     const nowMks = formatInTimeZone(now, timeZone, "yyyy-MM-dd");
+    console.log("now mks", nowMks);
     const query = `SELECT COUNT(*) AS count
         FROM aktivitas
         WHERE DATE(waktu) = ? and idUser = ?`;
