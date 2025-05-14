@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { idUser, waktu } = body;
 
-    // Validasi input (sangat penting!)
     if (!idUser || typeof idUser !== "number") {
       return NextResponse.json(
         { message: "idUser tidak valid." },

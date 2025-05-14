@@ -57,3 +57,11 @@ model keluar {
   waktu     DateTime
   createdAt DateTime @default(now())
 }
+
+model aktivitas {
+  id        Int      @id @default(autoincrement())
+  idUser    Int
+  kegiatan  String
+  waktu     DateTime
+  createdAt DateTime @default(now())
+}

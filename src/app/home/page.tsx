@@ -36,6 +36,13 @@ export default async function Home() {
           >
             Laporan
           </Link>
+          <Link
+            href="/home/aktivitas"
+            className="flex bg-orange-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white"
+          >
+            Aktivitas
+          </Link>
+
           {session?.user.data.level === "1" && (
             <>
               <Link
@@ -55,6 +62,12 @@ export default async function Home() {
                 className="flex bg-orange-500 h-32 rounded-lg p-2 items-center text-center justify-center text-2xl text-white"
               >
                 Edit Data Keluar
+              </Link>
+              <Link
+                href="/auth/register"
+                className="flex bg-orange-500 h-32 rounded-lg p-2 items-center justify-center text-2xl text-white"
+              >
+                Tambah User
               </Link>
             </>
           )}
