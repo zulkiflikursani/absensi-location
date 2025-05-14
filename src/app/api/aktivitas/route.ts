@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
       waktuUTC,
       userIdInt
     );
-    console.log("result", result);
+    console.log("result", result[0].count);
     if (result && result[0] && result[0].count > 0) {
       return NextResponse.json(
         { message: "Data aktivitas untuk hari ini sudah ada." },
