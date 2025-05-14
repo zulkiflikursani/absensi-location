@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
     // const now = new Date();
     // now.setHours(now.getHours() + 8);
     const nowMks = formatInTimeZone(waktuUTC, timeZone, "yyyy-MM-dd");
-    console.log("now mks", nowMks);
+
     const query = `SELECT COUNT(*) AS count
         FROM aktivitas
         WHERE DATE(waktu) = ? and idUser = ?`;
@@ -40,7 +40,6 @@ export async function POST(req: NextRequest) {
       nowMks,
       userIdInt
     );
-    console.log("result", result[0].count);
     if (result && result[0] && result[0].count > 0) {
       return NextResponse.json(
         { message: "Data aktivitas untuk hari ini sudah ada." },
