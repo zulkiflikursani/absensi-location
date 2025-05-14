@@ -28,16 +28,16 @@ export async function POST(req: NextRequest) {
     waktuDate.setHours(waktuDate.getHours() + 8);
     const waktuUTC = toZonedTime(waktuDate, timeZone);
 
-    const now = new Date();
+    // const now = new Date();
     // now.setHours(now.getHours() + 8);
-    const nowMks = formatInTimeZone(now, timeZone, "yyyy-MM-dd");
+    const nowMks = formatInTimeZone(waktuUTC, timeZone, "yyyy-MM-dd");
     console.log("now mks", nowMks);
     const query = `SELECT COUNT(*) AS count
         FROM aktivitas
         WHERE DATE(waktu) = ? and idUser = ?`;
     const result = await prisma.$queryRawUnsafe<{ count: number }[]>(
       query,
-      waktuUTC,
+      nowMks,
       userIdInt
     );
     console.log("result", result[0].count);
