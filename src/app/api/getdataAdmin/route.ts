@@ -1,23 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-interface TypeBody {
-  bulan: string;
-  bagian: string;
-  // idUser: string;
-}
+// interface TypeBody {
+//   bulan: string;
+//   bagian: string;
+//   // idUser: string;
+// }
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const data: TypeBody = body;
+  const { bulan, bagian } = body;
+  // const data: TypeBody = body;
   const prisma = new PrismaClient();
 
   try {
     const query = `WITH RECURSIVE DateSeries AS (
-        SELECT CAST('${data.bulan}' AS DATE) AS tanggal  -- Start date (1st of the month)
+        SELECT CAST(${bulan} AS DATE) AS tanggal  -- Start date (1st of the month)
         UNION ALL
         SELECT tanggal + INTERVAL 1 DAY
         FROM DateSeries
-        WHERE tanggal < LAST_DAY('${data.bulan}') -- End date (last day of the month)
+        WHERE tanggal < LAST_DAY(${bulan}) -- End date (last day of the month)
     )
     SELECT
         u.id AS idUser,
@@ -45,7 +46,7 @@ export async function POST(req: NextRequest) {
         keluar k ON DATE(ds.tanggal) = DATE(k.waktu)AND k.idUser = u.id
     where
         u.id != '2' 
-        and u.bagian = '${data.bagian}'
+        and u.bagian = ${bagian}
     GROUP BY
         u.id, ds.tanggal
     ORDER BY
@@ -57,11 +58,13 @@ export async function POST(req: NextRequest) {
       ? result.map((item) => {
           const newItem: { [key: string]: string } = {};
           for (const key in item) {
-            if (typeof item[key] === "bigint") {
-              newItem[key] = item[key].toString(); // Ubah menjadi string
-            } else {
-              newItem[key] = item[key];
-            }
+            newItem[key] =
+              typeof item[key] === "bigint" ? item[key].toString() : item[key];
+            // if (typeof item[key] === "bigint") {
+            //   newItem[key] = item[key].toString(); // Ubah menjadi string
+            // } else {
+            //   newItem[key] = item[key];
+            // }
           }
           return newItem;
         })
