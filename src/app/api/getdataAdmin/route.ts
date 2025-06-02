@@ -1,24 +1,24 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-// interface TypeBody {
-//   bulan: string;
-//   bagian: string;
-//   // idUser: string;
-// }
+interface TypeBody {
+  bulan: string;
+  bagian: string;
+  // idUser: string;
+}
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-  const { bulan, bagian } = body;
-  // const data: TypeBody = body;
+  // const { bulan, bagian } = body;
+  const data: TypeBody = body;
   const prisma = new PrismaClient();
 
   try {
     const query = `WITH RECURSIVE DateSeries AS (
-        SELECT CAST(${bulan} AS DATE) AS tanggal  -- Start date (1st of the month)
+        SELECT CAST(${data.bulan} AS DATE) AS tanggal  -- Start date (1st of the month)
         UNION ALL
         SELECT tanggal + INTERVAL 1 DAY
         FROM DateSeries
-        WHERE tanggal < LAST_DAY(${bulan}) -- End date (last day of the month)
+        WHERE tanggal < LAST_DAY(${data.bulan}) -- End date (last day of the month)
     )
     SELECT
         u.id AS idUser,
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         keluar k ON DATE(ds.tanggal) = DATE(k.waktu)AND k.idUser = u.id
     where
         u.id != '2' 
-        and u.bagian = ${bagian}
+        and u.bagian = ${data.bagian}
     GROUP BY
         u.id, ds.tanggal
     ORDER BY
