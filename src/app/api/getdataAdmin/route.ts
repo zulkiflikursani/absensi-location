@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
         ds.tanggal,
         CONCAT(ds.tanggal, ' 07:30:00')  AS jam_masuk,
         CONCAT(ds.tanggal, ' 16:00:00') AS jam_pulang,
-        m.waktu AS waktu_masuk,  -- Earliest 'masuk' time
-        k.waktu AS waktu_keluar,   -- Latest 'keluar' time
+        min(m.waktu) AS waktu_masuk,  -- Earliest 'masuk' time
+        max(k.waktu) AS waktu_keluar,   -- Latest 'keluar' time
        CAST(TIMESTAMPDIFF(MINUTE, MIN(m.waktu), MAX(k.waktu)) AS UNSIGNED) AS selisih_menit,
          CAST(TIMESTAMPDIFF(
         MINUTE,
@@ -50,6 +50,7 @@ export async function POST(req: NextRequest) {
         u.id, ds.tanggal
     ORDER BY
         u.id, ds.tanggal`;
+    console.log(query);
     const result = await prisma.$queryRawUnsafe(query);
     const processedResult = Array.isArray(result)
       ? result.map((item) => {
