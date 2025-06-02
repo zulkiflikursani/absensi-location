@@ -1,7 +1,7 @@
 "use client";
 import moment from "moment-timezone";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface DataType {
   idUser: string;
@@ -27,13 +27,18 @@ export default function LaporanAbsensi() {
   const [loading, setLoading] = useState(false);
   // const [first, setFirst] = useState(false);
   const [getBulan, setBulan] = useState<BodyType>({ bulan: "", bagian: "" });
-
+  const isFetching = useRef(false); // Ref untuk melacak status fetching
   useEffect(() => {
     const fetchData = async () => {
       // if (getBulan.bulan !== "" || getBulan.bulan !== null) {
       if (getBulan.bulan && getBulan.bagian) {
+        if (isFetching.current) {
+          console.log("Fetch in progress, skipping new request for:", getBulan);
+          return;
+        }
         try {
           setLoading(true);
+          isFetching.current = true; // Tandai sedang fetching
           const getData = await fetch(
             `${process.env.NEXT_PUBLIC_API_BASE_URL}/getdataAdmin`,
             {
@@ -62,11 +67,14 @@ export default function LaporanAbsensi() {
         } catch (error) {
           console.error("error :", error);
           setLoading(false);
+        } finally {
+          setLoading(false);
+          isFetching.current = false; // Selesai fetching (baik sukses atau gagal)
         }
       }
     };
     fetchData();
-  }, [getBulan]);
+  }, [getBulan, loading]);
 
   if (status === "loading") return <div>Loading...</div>;
   if (status === "unauthenticated") return <div>Anda belum login.</div>;
