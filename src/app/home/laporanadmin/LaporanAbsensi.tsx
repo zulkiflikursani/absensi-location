@@ -30,7 +30,8 @@ export default function LaporanAbsensi() {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (getBulan.bulan !== "" || getBulan.bulan !== null) {
+      // if (getBulan.bulan !== "" || getBulan.bulan !== null) {
+      if (getBulan.bulan && getBulan.bagian) {
         try {
           setLoading(true);
           const getData = await fetch(
@@ -41,6 +42,19 @@ export default function LaporanAbsensi() {
               body: JSON.stringify(getBulan),
             }
           );
+          if (!getData.ok) {
+            // Coba dapatkan pesan error dari body jika ada
+            let errorMessage = `HTTP error! status: ${getData.status}`;
+            try {
+              const errorBody = await getData.json();
+              errorMessage = errorBody.message || JSON.stringify(errorBody);
+            } catch (error) {
+              console.log(error);
+              // Gagal parse error body, gunakan status text
+              errorMessage = getData.statusText || errorMessage;
+            }
+            throw new Error(errorMessage);
+          }
           const result = await getData.json();
           setData(result);
           setLoading(false);
