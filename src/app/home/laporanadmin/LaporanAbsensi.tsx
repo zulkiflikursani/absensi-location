@@ -49,7 +49,7 @@ export default function LaporanAbsensi() {
               const errorBody = await getData.json();
               errorMessage = errorBody.message || JSON.stringify(errorBody);
             } catch (error) {
-              console.log(error);
+              console.log("errorbody :", error);
               // Gagal parse error body, gunakan status text
               errorMessage = getData.statusText || errorMessage;
             }
@@ -60,7 +60,7 @@ export default function LaporanAbsensi() {
           setLoading(false);
           console.log("result :", result);
         } catch (error) {
-          console.error(error);
+          console.error("error :", error);
           setLoading(false);
         }
       }
