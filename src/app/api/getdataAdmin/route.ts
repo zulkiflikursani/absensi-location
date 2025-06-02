@@ -57,10 +57,14 @@ export async function POST(req: NextRequest) {
       ? result.map((item) => {
           const newItem: { [key: string]: string } = {};
           for (const key in item) {
-            if (typeof item[key] === "bigint") {
-              newItem[key] = item[key].toString(); // Ubah menjadi string
+            const value = item[key];
+            if (typeof value === "bigint") {
+              newItem[key] = value.toString();
+            } else if (typeof value === "string" && /^\d{4}$/.test(value)) {
+              // Jika value seperti "2018", buang atau ganti jadi null
+              newItem[key] = "";
             } else {
-              newItem[key] = item[key];
+              newItem[key] = value;
             }
           }
           return newItem;
