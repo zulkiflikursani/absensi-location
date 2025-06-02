@@ -74,7 +74,7 @@ export default function LaporanAbsensi() {
       }
     };
     fetchData();
-  }, [getBulan, loading]);
+  }, [getBulan]);
 
   if (status === "loading") return <div>Loading...</div>;
   if (status === "unauthenticated") return <div>Anda belum login.</div>;
