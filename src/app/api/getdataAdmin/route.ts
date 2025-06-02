@@ -50,9 +50,9 @@ export async function POST(req: NextRequest) {
         u.id, ds.tanggal
     ORDER BY
         u.id, ds.tanggal`;
-    console.log(query);
+    // console.log(query);
     const result = await prisma.$queryRawUnsafe(query);
-    console.log(result);
+    // console.log(result);
     const processedResult = Array.isArray(result)
       ? result.map((item) => {
           const newItem: { [key: string]: string } = {};
@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
         })
       : [];
 
-    console.log("processedResult", processedResult);
+    // console.log("processedResult", processedResult);
     return NextResponse.json(processedResult);
   } catch (error) {
     return NextResponse.json({ message: "Error fetching data" + error });
