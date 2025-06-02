@@ -66,6 +66,8 @@ export async function POST(req: NextRequest) {
           return newItem;
         })
       : [];
+
+    console.log("processedResult", processedResult);
     return NextResponse.json(processedResult);
   } catch (error) {
     return NextResponse.json({ message: "Error fetching data" + error });
