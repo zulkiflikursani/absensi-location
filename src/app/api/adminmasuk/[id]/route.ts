@@ -6,7 +6,7 @@ import { NextRequest, NextResponse } from "next/server";
 // --- DELETE: Hapus data masuk berdasarkan ID ---
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const prisma = new PrismaClient();
   // const { id } = await params; // Konversi ID ke integer
@@ -34,7 +34,7 @@ export async function DELETE(
 // --- PATCH: Update data masuk berdasarkan ID ---
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ id: number }> }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const prisma = new PrismaClient();
   const id = parseInt((await params).id.toString(), 10);
