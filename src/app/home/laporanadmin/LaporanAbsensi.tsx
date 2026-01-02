@@ -114,18 +114,30 @@ export default function LaporanAbsensi() {
           className="border p-1"
         >
           <option value="">Pilih Bulan</option>
-          <option value="2025-01-01">Januari</option>
-          <option value="2025-02-01">Februari</option>
-          <option value="2025-03-01">Maret</option>
-          <option value="2025-04-01">April</option>
-          <option value="2025-05-01">Mei</option>
-          <option value="2025-06-01">Juni</option>
-          <option value="2025-07-01">Juli</option>
-          <option value="2025-08-01">Agustus</option>
-          <option value="2025-09-01">September</option>
-          <option value="2025-10-01">Oktober</option>
-          <option value="2025-11-01">November</option>
-          <option value="2025-12-01">Desember</option>
+          <option value="2025-01-01">Januari 2025</option>
+          <option value="2025-02-01">Februari 2025</option>
+          <option value="2025-03-01">Maret 2025</option>
+          <option value="2025-04-01">April 2025</option>
+          <option value="2025-05-01">Mei 2025</option>
+          <option value="2025-06-01">Juni 2025</option>
+          <option value="2025-07-01">Juli 2025</option>
+          <option value="2025-08-01">Agustus 2025</option>
+          <option value="2025-09-01">September 2025</option>
+          <option value="2025-10-01">Oktober 2025</option>
+          <option value="2025-11-01">November 2025</option>
+          <option value="2025-12-01">Desember 2025</option>
+          <option value="2026-01-01">Januari 2026</option>
+          <option value="2026-02-01">Februari 2026</option>
+          <option value="2026-03-01">Maret 2026</option>
+          <option value="2026-04-01">April 2026</option>
+          <option value="2026-05-01">Mei 2026</option>
+          <option value="2026-06-01">Juni 2026</option>
+          <option value="2026-07-01">Juli 2026</option>
+          <option value="2026-08-01">Agustus 2026</option>
+          <option value="2026-09-01">September 2026</option>
+          <option value="2026-10-01">Oktober 2026</option>
+          <option value="2026-11-01">November 2026</option>
+          <option value="2026-12-01">Desember 2026</option>
         </select>
       </div>
 
