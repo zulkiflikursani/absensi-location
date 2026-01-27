@@ -42,7 +42,7 @@ export default function LaporanAbsensi() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(getBulan),
-            }
+            },
           );
           const data = await getData.json();
           console.log(data);
@@ -74,6 +74,33 @@ export default function LaporanAbsensi() {
   if (status === "unauthenticated") {
     return <div>Anda belum login.</div>;
   }
+
+  const startYear = 2025;
+  const endYear = 2035;
+  const months = [
+    "januari",
+    "februari",
+    "maret",
+    "april",
+    "mei",
+    "juni",
+    "juli",
+    "agustus",
+    "september",
+    "oktober",
+    "november",
+    "desember",
+  ];
+  const today = new Date();
+  const currentYear = today.getFullYear();
+  const currentMonth = String(today.getMonth() + 1).padStart(2, "0");
+  const defaultValue = `${currentYear}-${currentMonth}-01`;
+
+  // Membuat array tahun dari 2025 sampai 2035
+  const years = Array.from(
+    { length: endYear - startYear + 1 },
+    (_, i) => startYear + i,
+  );
   return (
     <div className=" min-h-screen flex-col mx-2 text-[10px]">
       <div className="w-full grid grid-cols-2 my-2 bg-gray-100">
@@ -95,23 +122,23 @@ export default function LaporanAbsensi() {
                 <td>:</td>
                 <td>
                   <select
+                    defaultValue={defaultValue}
                     onChange={(e) =>
                       setBulan({ ...getBulan, bulan: e.target.value })
                     }
                   >
-                    <option value="">Pilih Bulan</option>
-                    <option value="2025-01-01">januari</option>
-                    <option value="2025-02-01">februari</option>
-                    <option value="2025-03-01">maret</option>
-                    <option value="2025-04-01">april</option>
-                    <option value="2025-05-01">mei</option>
-                    <option value="2025-06-01">juni</option>
-                    <option value="2025-07-01">juli</option>
-                    <option value="2025-08-01">agustus</option>
-                    <option value="2025-09-01">september</option>
-                    <option value="2025-10-01">oktober</option>
-                    <option value="2025-11-01">november</option>
-                    <option value="2025-12-01">desember</option>
+                    {years.flatMap((year) =>
+                      months.map((monthName, index) => {
+                        const monthValue = String(index + 1).padStart(2, "0");
+                        const fullValue = `${year}-${monthValue}-01`;
+
+                        return (
+                          <option key={fullValue} value={fullValue}>
+                            {monthName} {year}
+                          </option>
+                        );
+                      }),
+                    )}
                   </select>
                 </td>
               </tr>
