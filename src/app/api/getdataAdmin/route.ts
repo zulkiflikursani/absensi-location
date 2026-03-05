@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         u.id, ds.tanggal
     ORDER BY
         u.id, ds.tanggal`;
-    // console.log(query);
+    console.log(query);
     const result = await prisma.$queryRawUnsafe(query);
     // console.log(result);
     const processedResult = Array.isArray(result)
