@@ -70,9 +70,8 @@ GROUP BY
 ORDER BY
     u.id,
     ds.tanggal`;
-    console.log(query);
     const result = await prisma.$queryRawUnsafe(query);
-    // console.log(result);
+    console.log(result);
     const processedResult = Array.isArray(result)
       ? result.map((item) => {
           const newItem: { [key: string]: string } = {};
@@ -91,7 +90,7 @@ ORDER BY
         })
       : [];
 
-    // console.log("processedResult", processedResult);
+    console.log("processedResult", processedResult);
     return NextResponse.json(processedResult);
   } catch (error) {
     return NextResponse.json({ message: "Error fetching data" + error });
