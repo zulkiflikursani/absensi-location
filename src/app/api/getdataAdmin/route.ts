@@ -64,15 +64,20 @@ export async function POST(req: NextRequest) {
     );
 
     return NextResponse.json(processedResult);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage =
+      error instanceof Error ? error.message : "Unknown error";
+    const errorStack = error instanceof Error ? error.stack : "";
+    const prismaCode = (error as { code?: string })?.code; // Type casting aman
+
     console.error("--- DEBUG ERROR ---");
-    console.error("Prisma Code:", error.code);
-    console.error("Message:", error.message);
+    console.error("Message:", errorMessage);
 
     return NextResponse.json(
       {
-        debug_message: error.message,
-        prisma_code: error.code,
+        debug_message: errorMessage,
+        prisma_code: prismaCode,
+        stack: errorStack,
       },
       { status: 500 },
     );
